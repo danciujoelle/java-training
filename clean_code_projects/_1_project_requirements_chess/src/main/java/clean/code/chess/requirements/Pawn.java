@@ -1,6 +1,6 @@
 package clean.code.chess.requirements;
 
-public class Pawn {
+public class Pawn extends ChessPiece{
 
     private ChessBoard chessBoard;
     private int xCoordinate;
@@ -11,7 +11,7 @@ public class Pawn {
         this.pieceColor = pieceColor;
     }
 
-    public ChessBoard getChesssBoard() {
+    public ChessBoard getChessBoard() {
         return chessBoard;
     }
 
@@ -43,8 +43,41 @@ public class Pawn {
         pieceColor = value;
     }
 
-    public void Move(MovementType movementType, int newX, int newY) {
-        throw new UnsupportedOperationException("Need to implement Pawn.Move()") ;
+    public void Move( MovementType movementType, int newXCoordinate, int newYCoordinate ) throws InvalidMovementException
+    {
+        switch ( movementType )
+        {
+            case MOVE: {
+                if (!isValidMoveForChessPiece(newXCoordinate, newYCoordinate)) {
+                    throw new InvalidMovementException("Invalid movement", this, newXCoordinate, newYCoordinate, movementType);
+                }
+                break;
+            }
+            case CAPTURE: {
+                if (!isValidCaptureForChessPiece(newXCoordinate, newYCoordinate)) {
+                    throw new InvalidMovementException("Invalid movement", this, newXCoordinate, newYCoordinate, movementType);
+                }
+                break;
+            }
+            default:
+                throw new InvalidMovementException( "Unrecognised MovementType: " + movementType, this, newXCoordinate, newYCoordinate, movementType );
+        }
+
+        ChessPiece occupyingPiece = getChessBoard().getPieceAtCoordinate( newXCoordinate, newYCoordinate );
+
+        if ( occupyingPiece != null )
+        {
+            if ( this.getPieceColor().equals( occupyingPiece.getPieceColor() ) )
+            {
+                throw new InvalidMovementException( "A Chess piece on the same side already exists at position " + newXCoordinate + "," + newYCoordinate, this, newXCoordinate, newYCoordinate, movementType );
+            }
+
+            this.capturePiece( occupyingPiece );
+        }
+
+        this.setXCoordinate( newXCoordinate );
+        this.setYCoordinate( newYCoordinate );
+
     }
 
     @Override
@@ -55,5 +88,27 @@ public class Pawn {
     protected String CurrentPositionAsString() {
         String eol = System.lineSeparator();
         return String.format("Current X: {1}{0}Current Y: {2}{0}Piece Color: {3}", eol, xCoordinate, yCoordinate, pieceColor);
+    }
+
+
+    public boolean isValidMoveForChessPiece( int xCoordinate, int yCoordinate )
+    {
+        // Pawns can only move one space forward
+        if ( this.getInitYCoordinate() - 2 < 0 )
+        {
+            return ( yCoordinate - this.getYCoordinate() == 1 );
+        }
+        else
+        {
+            return ( yCoordinate - this.getYCoordinate() ) == -1;
+
+        }
+
+
+    }
+
+    public boolean isValidCaptureForChessPiece( int xCoordinate, int yCoordinate )
+    {
+        throw new UnsupportedOperationException( "Need to implement Pawn.isValidCaptureForChessPiece()" );
     }
 }

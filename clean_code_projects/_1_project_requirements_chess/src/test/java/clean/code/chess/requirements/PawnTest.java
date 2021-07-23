@@ -17,20 +17,20 @@ public class PawnTest {
     }
 
     @Test
-    public void testChessBoard_Add_Sets_XCoordinate() {
+    public void testChessBoard_Add_Sets_XCoordinate() throws InvalidPositionException {
         this.chessBoard.Add(testSubject, 6, 3, PieceColor.BLACK);
         assertEquals(6, testSubject.getXCoordinate());
     }
 
     @Test
-    public void testChessBoard_Add_Sets_YCoordinate() {
+    public void testChessBoard_Add_Sets_YCoordinate() throws InvalidPositionException {
         this.chessBoard.Add(testSubject, 6, 3, PieceColor.BLACK);
         assertEquals(3, testSubject.getYCoordinate());
     }
 
 
     @Test
-    public void testPawn_Move_IllegalCoordinates_Right_DoesNotMove() {
+    public void testPawn_Move_IllegalCoordinates_Right_DoesNotMove() throws InvalidPositionException, InvalidMovementException {
         chessBoard.Add(testSubject, 6, 3, PieceColor.BLACK);
         testSubject.Move(MovementType.MOVE, 7, 3);
         assertEquals(6, testSubject.getXCoordinate());
@@ -38,7 +38,7 @@ public class PawnTest {
     }
 
     @Test
-    public void testPawn_Move_IllegalCoordinates_Left_DoesNotMove() {
+    public void testPawn_Move_IllegalCoordinates_Left_DoesNotMove() throws InvalidPositionException, InvalidMovementException {
         chessBoard.Add(testSubject, 6, 3, PieceColor.BLACK);
         testSubject.Move(MovementType.MOVE, 4, 3);
         assertEquals(6, testSubject.getXCoordinate());
@@ -46,7 +46,7 @@ public class PawnTest {
     }
 
     @Test
-    public void testPawn_Move_LegalCoordinates_Forward_UpdatesCoordinates() {
+    public void testPawn_Move_LegalCoordinates_Forward_UpdatesCoordinates() throws InvalidPositionException, InvalidMovementException {
         chessBoard.Add(testSubject, 6, 3, PieceColor.BLACK);
         testSubject.Move(MovementType.MOVE, 6, 2);
         assertEquals(6, testSubject.getXCoordinate());

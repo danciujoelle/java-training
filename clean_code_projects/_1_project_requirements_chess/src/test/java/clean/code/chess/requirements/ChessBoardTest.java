@@ -61,7 +61,7 @@ public class ChessBoardTest extends TestCase {
     }
 
     @Test
-    public void Avoids_Duplicate_Positioning() {
+    public void Avoids_Duplicate_Positioning() throws InvalidPositionException {
         Pawn firstPawn = new Pawn(PieceColor.BLACK);
         Pawn secondPawn = new Pawn(PieceColor.BLACK);
         testSubject.Add(firstPawn, 6, 3, PieceColor.BLACK);
@@ -73,8 +73,7 @@ public class ChessBoardTest extends TestCase {
     }
 
     @Test
-    public void testLimits_The_Number_Of_Pawns()
-    {
+    public void testLimits_The_Number_Of_Pawns() throws InvalidPositionException {
         for (int i = 0; i < 10; i++)
         {
             Pawn pawn = new Pawn(PieceColor.BLACK);
